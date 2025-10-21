@@ -93,7 +93,7 @@ export default function SertifikatDetail() {
                         {p.fasilitas}</td>
                       <td className="py-3 px-4 text-center">
                         <a
-                          href={p.file}
+                            href="/api/generatepdf"
                           target="_blank"
                           rel="noopener noreferrer"
                           className="inline-block bg-[#1174ba] text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-600 transition"
@@ -146,7 +146,7 @@ export default function SertifikatDetail() {
                   </p>
 
                   <a
-                    href={p.file}
+                     href="/api/generatepdf"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="mt-3 inline-block w-full text-center bg-[#1174ba] text-white font-semibold py-2 rounded-lg hover:bg-blue-600 transition"
