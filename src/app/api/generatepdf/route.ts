@@ -2,6 +2,7 @@ export const runtime = "nodejs";
 import PDFDocument from "pdfkit";
 import fs from "fs";
 import path from "path";
+import QRCode from "qrcode";
 
 export async function GET() {
   // 📁 Path font dan gambar
@@ -42,6 +43,25 @@ export async function GET() {
   doc.text("Nama: Arief Yuda");
   doc.text("Instansi: Foscal Academy");
   doc.text("Fasilitas: E-Sertifikat, Materi, Rekaman Video");
+  doc.moveDown(2);
+
+  // 📲 Buat QR Code (misal untuk link verifikasi)
+  const link = "https://foscalacademy.com/verifikasi/sertifikat/ARIEF123";
+  const qrDataUrl = await QRCode.toDataURL(link, { margin: 1, width: 100 });
+
+    // Konversi DataURL → Buffer agar bisa digambar di PDF
+  const qrImage = qrDataUrl.replace(/^data:image\/png;base64,/, "");
+  const qrBuffer = Buffer.from(qrImage, "base64");
+
+  // 🧾 Tambahkan QR ke PDF (posisi kanan bawah)
+  const qrX = doc.page.width - 140;
+  const qrY = doc.page.height - 180;
+  doc.image(qrBuffer, qrX, qrY, { width: 100, height: 100 });
+
+   doc.fontSize(10).fillColor("gray").text("Scan untuk verifikasi", qrX, qrY + 105, {
+    align: "center",
+    width: 100,
+  });
 
   // ✅ Akhiri PDF
   doc.end();
