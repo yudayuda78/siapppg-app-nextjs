@@ -6,7 +6,6 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
 }
 
 datasource db {
@@ -18,7 +17,17 @@ model event{
   id Int @id @default(autoincrement())
   title String
   slug String
+  img String?
   start DateTime
   end DateTime
+  linkDaftar String
   createdAt DateTime @default(now())
+}
+
+model datasertifikat{
+  id Int @id @default(autoincrement())
+  name String
+  instansi String
+  slug String
+  kegiatan String
 }
