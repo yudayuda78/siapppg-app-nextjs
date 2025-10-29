@@ -16,7 +16,7 @@ datasource db {
 model event{
   id Int @id @default(autoincrement())
   title String
-  slug String
+  slug String @unique
   img String?
   start DateTime
   end DateTime
@@ -27,7 +27,7 @@ model event{
 model sertifikat{
   id Int @id @default(autoincrement())
   name String
-  slug String
+  slug String @unique
 
 }
 
@@ -35,7 +35,7 @@ model datasertifikat{
   id Int @id @default(autoincrement())
   name String
   instansi String
-  slug String
+  slug String @unique
   kegiatan String
   fasilitas String
   jenissertif String?
