@@ -24,10 +24,19 @@ model event{
   createdAt DateTime @default(now())
 }
 
+model sertifikat{
+  id Int @id @default(autoincrement())
+  name String
+  slug String
+
+}
+
 model datasertifikat{
   id Int @id @default(autoincrement())
   name String
   instansi String
   slug String
   kegiatan String
+  fasilitas String
+  jenissertif String?
 }
