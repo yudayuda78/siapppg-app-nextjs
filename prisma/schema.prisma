@@ -13,7 +13,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model event{
+model Event{
   id Int @id @default(autoincrement())
   title String
   slug String @unique
@@ -24,14 +24,14 @@ model event{
   createdAt DateTime @default(now())
 }
 
-model sertifikat{
+model Sertifikat{
   id Int @id @default(autoincrement())
   name String
   slug String @unique
 
 }
 
-model datasertifikat{
+model Datasertifikat{
   id Int @id @default(autoincrement())
   name String
   instansi String
@@ -39,4 +39,22 @@ model datasertifikat{
   kegiatan String
   fasilitas String
   jenissertif String?
+}
+
+
+model Course{
+  id Int @id @default(autoincrement())
+  title String
+  slug String @unique
+  fasilitas String
+  topics Topic[]
+  createdAt DateTime @default(now())
+}
+
+model Topic{
+  id Int @id @default(autoincrement())
+  title String
+  slug String @unique
+  courseId Int
+  course    Course   @relation(fields: [courseId], references: [id])
 }

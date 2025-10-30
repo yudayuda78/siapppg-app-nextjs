@@ -8,9 +8,7 @@ export async function GET(){
         return NextResponse.json(
             {
                 success: true,
-                data: {
-                    verifsertif,
-                },
+                data: verifsertif,
                 message: "Datasertifikat fetched successfully",
             },
             { status: 200 }
