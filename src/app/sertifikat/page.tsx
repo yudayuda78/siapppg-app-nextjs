@@ -1,29 +1,31 @@
+"use client"
 import Navbar from "@/component/composite/Navbar";
+import { useState, useEffect } from "react";
 
 export default function Sertifikat() {
-  const sertifikatList = [
-    {
-      id: 1,
-      nama: "Workshop React JS Dasar",
-      tanggal: "12 Oktober 2025",
-      penyelenggara: "Foscal Academy",
-      file: "/sertifikat/reactjs.pdf",
-    },
-    {
-      id: 2,
-      nama: "Pelatihan UI/UX Design",
-      tanggal: "25 September 2025",
-      penyelenggara: "MentorKita",
-      file: "/sertifikat/uiux.pdf",
-    },
-    {
-      id: 3,
-      nama: "Webinar AI dan Machine Learning",
-      tanggal: "5 Agustus 2025",
-      penyelenggara: "TechTalk Indonesia",
-      file: "/sertifikat/ai.pdf",
-    },
-  ];
+  const [sertifikatList, setSertifikatList] = useState<any>({})
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    async function fetchDataSertif(){
+      try{
+        const response = await fetch("/api/sertifikat")
+        if(!response.ok){
+          throw new Error("Gagal Ambil Data")
+        }
+        const data = await response.json()
+        console.log("Response JSON:", data)
+        setSertifikatList(data) // ✅ simpan seluruh object
+      }catch(error: any){
+        setError(error.message)
+      }finally{
+        setLoading(false)
+      }
+    }
+
+    fetchDataSertif()
+  }, [])
 
   return (
     <>
@@ -34,42 +36,44 @@ export default function Sertifikat() {
             Daftar Sertifikat Kamu
           </h1>
 
-          <div className="bg-white shadow-md rounded-xl overflow-hidden">
-            <table className="w-full border-collapse">
-              <thead className="bg-[#1174ba] text-white">
-                <tr>
-                  <th className="py-3 px-4 text-left">#</th>
-                  <th className="py-3 px-4 text-left">Nama Sertifikat</th>
-                  <th className="py-3 px-4 text-left">Tanggal</th>
-                  <th className="py-3 px-4 text-left">Penyelenggara</th>
-                  <th className="py-3 px-4 text-center">Aksi</th>
-                </tr>
-              </thead>
-              <tbody>
-                {sertifikatList.map((item, index) => (
-                  <tr
-                    key={item.id}
-                    className="border-b hover:bg-blue-50 transition"
+          {loading && <p className="text-center text-gray-500">Memuat data...</p>}
+          {error && <p className="text-center text-red-500">Terjadi kesalahan: {error}</p>}
+
+          {!loading && !error && sertifikatList.data?.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {sertifikatList.data.map((item: any) => (
+                <div
+                  key={item.id}
+                  className="bg-white shadow-md rounded-2xl p-6 flex flex-col justify-between border border-gray-100"
+                >
+                  <div>
+                    <h2 className="text-xl font-semibold text-gray-800 mb-2">
+                      {item.name}
+                    </h2>
+                    <p className="text-sm text-gray-500 mb-4">
+                      Slug: {item.slug}
+                    </p>
+                  </div>
+
+                  <button
+                    onClick={() => alert(`Kamu klik sertifikat ${item.name}`)}
+                    className="bg-[#1174ba] text-white font-medium py-2 rounded-xl hover:bg-[#0e5e97] transition"
                   >
-                    <td className="py-3 px-4">{index + 1}</td>
-                    <td className="py-3 px-4">{item.nama}</td>
-                    <td className="py-3 px-4">{item.tanggal}</td>
-                    <td className="py-3 px-4">{item.penyelenggara}</td>
-                    <td className="py-3 px-4 text-center">
-                      <a
-                        href={item.file}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="bg-[#1174ba] text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-600 transition"
-                      >
-                        Lihat
-                      </a>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                    Lihat Sertifikat
+                  </button>
+                </div>
+              ))}
+            </div>
+          ) : (
+            !loading &&
+            !error && (
+              <p className="text-center text-gray-500">
+                Belum ada sertifikat tersedia.
+              </p>
+            )
+          )}
+
+        
         </div>
       </section>
     </>
