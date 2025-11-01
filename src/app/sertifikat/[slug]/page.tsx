@@ -1,10 +1,36 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Navbar from "@/component/composite/Navbar";
 import Button from "@/component/ui/Button";
+import { useParams } from "next/navigation";
 
 export default function SertifikatDetail() {
+  const { slug } = useParams()
+  const [sertifikatDetail, setSertifikatDetail] = useState<any>({})
+
+  useEffect(() => {
+    async function fetchDataSertif(){
+      try{
+        const response = await fetch(`/api/sertifikat/${slug}`)
+        if(!response){
+          throw new Error("gagal mengambil data")
+        }
+
+        const result = await response.json()
+        setSertifikatDetail(result.data)
+      }catch(error){
+
+      }finally{
+
+      }
+    }
+
+    if (slug) {
+      fetchDataSertif()
+    }
+  }, [slug])
+  
   const pesertaList = [
     {
       nama: "Arief Yuda",
@@ -41,8 +67,9 @@ export default function SertifikatDetail() {
       <section className="min-h-screen bg-gray-50 py-20 px-4 md:px-8">
         <div className="max-w-5xl mx-auto bg-white shadow-lg rounded-2xl p-4 md:p-6">
           <h1 className="text-2xl font-bold text-[#1174ba] mb-6 text-center">
-            Daftar Penerima Sertifikat
+            Daftar Penerima {sertifikatDetail.name}
           </h1>
+          
 
           {/* 🔍 Input Pencarian */}
           <div className="mb-6 flex justify-center">

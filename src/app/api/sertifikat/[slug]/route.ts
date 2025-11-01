@@ -26,9 +26,7 @@ export async function GET(request: Request,{ params }: { params: { slug: string 
     return NextResponse.json(
       {
         success: true,
-        data: {
-          sertifikat,
-        },
+        data: sertifikat,
         message: "Datasertifikat fetched successfully",
       },
       { status: 200 }

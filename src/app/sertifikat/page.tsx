@@ -1,46 +1,52 @@
-"use client"
+"use client";
 import Navbar from "@/component/composite/Navbar";
 import { useState, useEffect } from "react";
+import Link from "next/link";
 
 export default function Sertifikat() {
-  const [sertifikatList, setSertifikatList] = useState<any>({})
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+  const [sertifikatList, setSertifikatList] = useState<any>({});
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    async function fetchDataSertif(){
-      try{
-        const response = await fetch("/api/sertifikat")
-        if(!response.ok){
-          throw new Error("Gagal Ambil Data")
+    async function fetchDataSertif() {
+      try {
+        const response = await fetch("/api/sertifikat");
+        if (!response.ok) {
+          throw new Error("Gagal Ambil Data");
         }
-        const data = await response.json()
-        console.log("Response JSON:", data)
-        setSertifikatList(data) // ✅ simpan seluruh object
-      }catch(error: any){
-        setError(error.message)
-      }finally{
-        setLoading(false)
+        const data = await response.json();
+        setSertifikatList(data);
+      } catch (error: any) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
       }
     }
 
-    fetchDataSertif()
-  }, [])
+    fetchDataSertif();
+  }, []);
 
   return (
     <>
       <Navbar />
-      <section className="min-h-screen bg-gray-50 py-20 px-6">
-        <div className="max-w-5xl mx-auto">
+      <section className="min-h-screen bg-gray-50 py-20">
+        <div className="max-w-6xl mx-auto px-0 md:px-6">
           <h1 className="text-3xl font-bold text-[#1174ba] mb-8 text-center">
             Daftar Sertifikat Kamu
           </h1>
 
-          {loading && <p className="text-center text-gray-500">Memuat data...</p>}
-          {error && <p className="text-center text-red-500">Terjadi kesalahan: {error}</p>}
+          {loading && (
+            <p className="text-center text-gray-500">Memuat data...</p>
+          )}
+          {error && (
+            <p className="text-center text-red-500">
+              Terjadi kesalahan: {error}
+            </p>
+          )}
 
           {!loading && !error && sertifikatList.data?.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 py-3">
               {sertifikatList.data.map((item: any) => (
                 <div
                   key={item.id}
@@ -55,12 +61,13 @@ export default function Sertifikat() {
                     </p>
                   </div>
 
+                  <Link href={`/sertifikat/${item.slug}`}>
                   <button
-                    onClick={() => alert(`Kamu klik sertifikat ${item.name}`)}
                     className="bg-[#1174ba] text-white font-medium py-2 rounded-xl hover:bg-[#0e5e97] transition"
                   >
                     Lihat Sertifikat
                   </button>
+                  </Link>
                 </div>
               ))}
             </div>
@@ -72,8 +79,6 @@ export default function Sertifikat() {
               </p>
             )
           )}
-
-        
         </div>
       </section>
     </>
