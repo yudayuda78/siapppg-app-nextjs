@@ -46,6 +46,7 @@ model Course{
   id Int @id @default(autoincrement())
   title String
   slug String @unique
+  img String
   fasilitas String
   topics Topic[]
   createdAt DateTime @default(now())

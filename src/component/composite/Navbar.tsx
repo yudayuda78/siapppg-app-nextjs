@@ -26,6 +26,13 @@ export default function Navbar() {
           </Link>
 
           <Link
+            href="/course"
+            className="text-black font-medium hover:text-gray-700 transition-colors"
+          >
+            Course
+          </Link>
+
+          <Link
             href="/sertifikat"
             className="text-black font-medium hover:text-gray-700 transition-colors"
           >

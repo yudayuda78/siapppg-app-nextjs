@@ -19,7 +19,7 @@ export default function EventContent() {
       try {
         const res = await fetch("/api/event");
         const result = await res.json();
-        setEvents(result.data); // sesuai struktur response dari route kamu
+        setEvents(result.data);
       } catch (error) {
         console.error("Failed to fetch events:", error);
       } finally {
