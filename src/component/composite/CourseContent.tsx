@@ -1,21 +1,34 @@
+"use client"
+import { useState, useEffect } from "react";
+
+
+
 export default function CourseContent() {
-  const courses = [
-    {
-      title: "Belajar HTML & CSS",
-      description: "Pelajari dasar pembuatan website dari struktur hingga tampilan modern.",
-      icon: "🌐",
-    },
-    {
-      title: "JavaScript Dasar",
-      description: "Kuasai logika dan interaksi web menggunakan bahasa JavaScript.",
-      icon: "⚡",
-    },
-    {
-      title: "React untuk Pemula",
-      description: "Bangun aplikasi web dinamis dan interaktif dengan React JS.",
-      icon: "⚛️",
-    },
-  ];
+    const [courses, setCourses] = useState<any>({})
+    const [loading, setLoading] = useState(true)
+    const [error, setError] = useState<string | null>(null)
+    
+    useEffect(() => {
+        async function fetchDataCourse(){
+            try{
+                const response = await fetch("/api/course")
+                if (!response.ok) {
+                    throw new Error("Gagal Ambil Data");
+                }
+                const data = await response.json();
+                setCourses(data)
+            }catch(error: any){
+                setError(error.message);
+            }finally{
+                setLoading(false);
+            }
+        }
+
+        fetchDataCourse()
+    }, [])
+
+    console.log(courses)
+  
 
   return (
     <section className="bg-gray-50 py-16">
@@ -26,6 +39,15 @@ export default function CourseContent() {
         <p className="text-gray-600 max-w-2xl mx-auto mb-12">
           Tingkatkan skill kamu melalui berbagai course interaktif yang dirancang untuk semua level — dari pemula hingga mahir.
         </p>
+
+        {loading && (
+            <p className="text-center text-gray-500">Memuat data...</p>
+          )}
+          {error && (
+            <p className="text-center text-red-500">
+              Terjadi kesalahan: {error}
+            </p>
+          )}
 
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {courses.map((course, index) => (
